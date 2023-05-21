@@ -1,0 +1,15 @@
+body {
+  font-family: sans-serif;
+}
+  
+#title {
+  text-align: center;
+  font-size: 150%;
+  font-weight: bold;
+}
+
+#points {
+  text-align: center;
+  font-size: 200%;
+  position: sticky;
+}
