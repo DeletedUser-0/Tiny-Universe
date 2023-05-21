@@ -23,7 +23,7 @@ function addpoints() {
 };
 
 function up1() {
-    if (ExpantaNum.cmp(player.points.points, ) >= 0) {
+    if (ExpantaNum.cmp(player.points.points, player.up1.cost) >= 0) {
         player.points.points = ExpantaNum.sub(player.points.points, player.up1.cost);
         player.points.pps = ExpantaNum.add(player.points.pps, 0.01);
         player.up1.cost = ExpantaNum.add(player.up1.cost, 0.05).times(1.06);
