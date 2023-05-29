@@ -32,13 +32,13 @@ window.setInterval(function() {
 }, 20);
 
 window.setInterval(function() {
-    document.getElementById("points").innerHTML = `Points: ${notate(player.points.points)} (+${new ExpantaNum(player.points.pps).toFixed(2)}/s)`;
-    document.getElementById("up1").innerHTML = `<b>Increase points production by 0.01</b> <br> Cost: <b>${new ExpantaNum(player.up1.cost).toFixed(2)}</b> points <br> Level: ${Math.round(new ExpantaNum(player.up1.level))}`;
+    document.getElementById("points").innerHTML = `Points: ${notate(player.points.points)} (+${notate(player.points.pps)}/s)`;
+    document.getElementById("up1").innerHTML = `<b>Increase points production by 0.01</b> <br> Cost: <b>${notate(player.up1.cost)}</b> points <br> Level: ${Math.round(new ExpantaNum(player.up1.level))}`;
     if (ExpantaNum.cmp(player.points.max, 1) >= 0) {
         if (ExpantaNum.cmp(player.up2.level, 1) >= 0) {
-            document.getElementById("up2").innerHTML = `<b>+${ExpantaNum.times(player.up2.chance, 0.1).toFixed(1)}% chance/s to increase points production by 0.01 (currently: ${new ExpantaNum(player.up2.chance).toFixed(1)}%) </b> <br> Cost: <b>${new ExpantaNum(player.up2.cost).toPrecision(2)}</b> points <br> Level: ${Math.round(new ExpantaNum(player.up2.level))}`;
+            document.getElementById("up2").innerHTML = `<b>+${ExpantaNum.times(player.up2.chance, 0.1).toFixed(1)}% chance/s to increase points production by 0.01 (currently: ${new ExpantaNum(player.up2.chance).toFixed(1)}%) </b> <br> Cost: <b>${notate(player.up2.cost)}</b> points <br> Level: ${Math.round(new ExpantaNum(player.up2.level))}`;
         } else {
-            document.getElementById("up2").innerHTML = `<b>Add a 10.0% chance/s to increase points production by 0.01 (currently: ${new ExpantaNum(player.up2.chance).toFixed(1)}%) </b> <br> Cost: <b>${new ExpantaNum(player.up2.cost).toPrecision(2)}</b> points <br> Level: ${Math.round(new ExpantaNum(player.up2.level))}`;
+            document.getElementById("up2").innerHTML = `<b>Add a 10.0% chance/s to increase points production by 0.01 (currently: ${new ExpantaNum(player.up2.chance).toFixed(1)}%) </b> <br> Cost: <b>${notate(player.up2.cost)}</b> points <br> Level: ${Math.round(new ExpantaNum(player.up2.level))}`;
         };
     } else {
         document.getElementById("up2").innerHTML = `Reach 1 point to see this upgrade.`;
@@ -117,10 +117,12 @@ function notate(number) {
       }
     }
   
-    if (num.lt(ExpantaNum(1000))) {
+    if (ExpantaNum.cmp(num, 100) < 0) {
       // Ensure numbers less than 100 have exactly two decimal places
       return num.toFixed(2);
-    }
+    } else if ((ExpantaNum.cmp(num, 1000) < 0) && (ExpantaNum.cmp(num, 100) > 0)) {
+        return Math.floor(num);
+    };
   
     if (num.gt(ExpantaNum(1e66))) {
       var exponent = ExpantaNum.log10(num).toFixed(0);
