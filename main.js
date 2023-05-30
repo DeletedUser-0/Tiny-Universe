@@ -6,12 +6,12 @@ class Player {
             max: data?.points?.max || 0
         };
         this.up1 = {
-            cost: data?.up1?.cost || 0.10,
+            cost: data?.up1?.cost || 0.1,
             level: data?.up1?.level || 0,
             effect: data?.up1?.effect || 0.01
         };
         this.up1b = {
-            cost: data?.up1b?.cost || 10,
+            cost: data?.up1b?.cost || 100,
             level: data?.up1b?.level || 0,
         };
         this.up2 = {
@@ -166,3 +166,22 @@ function Load() {
 };
 
 Load();
+
+function resetgame() {
+    if (confirm("Are you sure you want to reset the game?") == true) {
+        if (confirm("ARE YOU REALLY SURE?") == true) {
+            player.points.points = new ExpantaNum(0);
+            player.points.pps = new ExpantaNum(0.01);
+            player.points.max = new ExpantaNum(0);
+            player.up1.cost = new ExpantaNum(0.1);
+            player.up1.level = new ExpantaNum(0);
+            player.up1.effect = new ExpantaNum(0.01);
+            player.up1b.cost = new ExpantaNum(100);
+            player.up1b.level = new ExpantaNum(0);
+            player.up2.cost = new ExpantaNum(10);
+            player.up2.level = new ExpantaNum(0);
+            player.up2.effect = new ExpantaNum(0.01);
+            player.up2.chance = new ExpantaNum(0);        
+        };
+    };
+};
