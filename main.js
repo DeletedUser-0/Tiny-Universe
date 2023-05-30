@@ -39,7 +39,7 @@ window.setInterval(function() {
 window.setInterval(function() {
     document.getElementById("points").innerHTML = `Points: ${notate(player.points.points)} (+${notate(player.points.pps)}/s)`;
     document.getElementById("up1").innerHTML = `<b>Increase points production by ${notate(player.up1.effect)}</b> <br> Cost: <b>${notate(player.up1.cost)}</b> points <br> Level: ${ExpantaNum.round(player.up1.level)}`;
-    document.getElementById("up1b").innerHTML = `<b>Multiply first upgrade effect by 2.5</b> <br> Cost: <b>${notate(player.up1b.cost)}</b> points <br> Level: ${ExpantaNum.round(player.up1b.level)}`;
+    document.getElementById("up1b").innerHTML = `<b>Multiply first upgrade effect by 3</b> <br> Cost: <b>${notate(player.up1b.cost)}</b> points <br> Level: ${ExpantaNum.round(player.up1b.level)}`;
     if (ExpantaNum.cmp(player.points.max, 1) >= 0) {
         if (ExpantaNum.cmp(player.up2.level, 1) >= 0) {
             document.getElementById("up2").innerHTML = `<b>+${ExpantaNum.times(player.up2.chance, 0.1).toFixed(1)}% chance/s to increase points production by 0.01 (currently: ${new ExpantaNum(player.up2.chance).toFixed(1)}%) </b> <br> Cost: <b>${notate(player.up2.cost)}</b> points <br> Level: ${ExpantaNum.round(player.up2.level)}`;
@@ -79,7 +79,7 @@ function up1() {
 function up1b() {
     if (ExpantaNum.cmp(player.points.points, player.up1b.cost) >= 0) {
         player.points.points = ExpantaNum.sub(player.points.points, player.up1b.cost);
-        player.up1.effect = ExpantaNum.times(player.up1.effect, 2.5);
+        player.up1.effect = ExpantaNum.times(player.up1.effect, 3);
         player.up1b.cost = ExpantaNum.times(player.up1b.cost, 10);
         player.up1b.level = ExpantaNum.add(player.up1b.level, 1);
     };
