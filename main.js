@@ -10,6 +10,10 @@ class Player {
             level: data?.up1?.level || 0,
             effect: data?.up1?.effect || 0.01
         };
+        this.up1b = {
+            cost: data?.up1b?.cost || 10,
+            level: data?.up1b?.level || 0,
+        };
         this.up2 = {
             cost: data?.up2?.cost || 10,
             level: data?.up2?.level || 0,
@@ -34,7 +38,8 @@ window.setInterval(function() {
 
 window.setInterval(function() {
     document.getElementById("points").innerHTML = `Points: ${notate(player.points.points)} (+${notate(player.points.pps)}/s)`;
-    document.getElementById("up1").innerHTML = `<b>Increase points production by 0.01</b> <br> Cost: <b>${notate(player.up1.cost)}</b> points <br> Level: ${Math.round(new ExpantaNum(player.up1.level))}`;
+    document.getElementById("up1").innerHTML = `<b>Increase points production by ${notate(player.up1.effect)}</b> <br> Cost: <b>${notate(player.up1.cost)}</b> points <br> Level: ${ExpantaNum.round(player.up1.level)}`;
+    document.getElementById("up1b").innerHTML = `<b>Multiply first upgrade effect by 2.5</b> <br> Cost: <b>${notate(player.up1b.cost)}</b> points <br> Level: ${ExpantaNum.round(player.up1b.level)}`;
     if (ExpantaNum.cmp(player.points.max, 1) >= 0) {
         if (ExpantaNum.cmp(player.up2.level, 1) >= 0) {
             document.getElementById("up2").innerHTML = `<b>+${ExpantaNum.times(player.up2.chance, 0.1).toFixed(1)}% chance/s to increase points production by 0.01 (currently: ${new ExpantaNum(player.up2.chance).toFixed(1)}%) </b> <br> Cost: <b>${notate(player.up2.cost)}</b> points <br> Level: ${ExpantaNum.round(player.up2.level)}`;
@@ -71,6 +76,15 @@ function up1() {
     };
 };
 
+function up1b() {
+    if (ExpantaNum.cmp(player.points.points, player.up1b.cost) >= 0) {
+        player.points.points = ExpantaNum.sub(player.points.points, player.up1b.cost);
+        player.up1.effect = ExpantaNum.times(player.up1.effect, 2.5);
+        player.up1b.cost = ExpantaNum.times(player.up1b.cost, 10);
+        player.up1b.level = ExpantaNum.add(player.up1b.level, 1);
+    };
+};
+
 function up2() {
     if (ExpantaNum.cmp(player.points.points, player.up2.cost) >= 0) {
         if (ExpantaNum.cmp(player.up2.level, 1) >= 0) {
@@ -85,7 +99,12 @@ function up2() {
 };
 
 function notate(number) {
+
     const num = ExpantaNum(number);
+
+    if (isNaN(number) == true) {
+        number = num
+    }
   
     const notationSymbols = [
       { value: ExpantaNum(1e3), symbol: 'K' },
@@ -123,6 +142,8 @@ function notate(number) {
       return num.toFixed(2);
     } else if ((ExpantaNum.cmp(num, 1000) < 0) && (ExpantaNum.cmp(num, 100) > 0)) {
         return Math.floor(num);
+    } else if ((ExpantaNum.cmp(num, 1000000) < 0) && (ExpantaNum.cmp(num, 1000) > 0)) {
+        return `${ExpantaNum.div(num, 1000).toFixed(2)}K`;
     };
   
     if (num.gt(ExpantaNum(1e66))) {
