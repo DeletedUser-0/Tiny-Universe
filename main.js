@@ -29,6 +29,7 @@ window.setInterval(function() {
 window.setInterval(function() {
     addpoints();
     maxpoints();
+    Save();
 }, 20);
 
 window.setInterval(function() {
@@ -142,3 +143,5 @@ function Load() {
     console.log("Save loaded");
     return player.obj || "default";
 };
+
+Load();
