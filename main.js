@@ -42,12 +42,16 @@ window.setInterval(function() {
     document.getElementById("up1b").innerHTML = `<b>Multiply first upgrade effect by 3</b> <br> Cost: <b>${notate(player.up1b.cost)}</b> points <br> Level: ${ExpantaNum.round(player.up1b.level)}`;
     if (ExpantaNum.cmp(player.points.max, 1) >= 0) {
         if (ExpantaNum.cmp(player.up2.level, 1) >= 0) {
-            document.getElementById("up2").innerHTML = `<b>+${ExpantaNum.times(player.up2.chance, 0.1).toFixed(1)}% chance/s to increase points production by 0.01 (currently: ${new ExpantaNum(player.up2.chance).toFixed(1)}%) </b> <br> Cost: <b>${notate(player.up2.cost)}</b> points <br> Level: ${ExpantaNum.round(player.up2.level)}`;
+            document.getElementById("up2").innerHTML = `<b>+${ExpantaNum.times(player.up2.chance, 0.1).toFixed(1)}% chance/s to increase points production by ${notate(player.up2.effect)} (currently: ${new ExpantaNum(player.up2.chance).toFixed(1)}%) </b> <br> Cost: <b>${notate(player.up2.cost)}</b> points <br> Level: ${ExpantaNum.round(player.up2.level)}`;
         } else {
             document.getElementById("up2").innerHTML = `<b>Add a 10.0% chance/s to increase points production by 0.01 (currently: ${new ExpantaNum(player.up2.chance).toFixed(1)}%) </b> <br> Cost: <b>${notate(player.up2.cost)}</b> points <br> Level: ${ExpantaNum.round(player.up2.level)}`;
         };
     } else {
         document.getElementById("up2").innerHTML = `Reach 1 point to see this upgrade.`;
+    };
+    if (ExpantaNum.cmp(player.up2.chance, 100) >= 0) {
+        player.up2.effect = ExpantaNum.times(player.up2.effect, 15);
+        player.up2.chance = new ExpantaNum("10");
     };
 }, 0);
 
