@@ -104,42 +104,11 @@ function up2() {
 
 function notate(number) {
 
-    const num = ExpantaNum(number);
+    const num = new ExpantaNum(number);
 
     if (isNaN(number) == true) {
         number = num
-    }
-  
-    const notationSymbols = [
-      { value: ExpantaNum(1e3), symbol: 'K' },
-      { value: ExpantaNum(1e6), symbol: 'M' },
-      { value: ExpantaNum(1e9), symbol: 'B' },
-      { value: ExpantaNum(1e12), symbol: 'T' },
-      { value: ExpantaNum(1e15), symbol: 'Qa' },
-      { value: ExpantaNum(1e18), symbol: 'Qi' },
-      { value: ExpantaNum(1e21), symbol: 'Sx' },
-      { value: ExpantaNum(1e24), symbol: 'Sp' },
-      { value: ExpantaNum(1e27), symbol: 'Oc' },
-      { value: ExpantaNum(1e30), symbol: 'No' },
-      { value: ExpantaNum(1e33), symbol: 'Dc' },
-      { value: ExpantaNum(1e36), symbol: 'uDc' },
-      { value: ExpantaNum(1e39), symbol: 'dDc' },
-      { value: ExpantaNum(1e42), symbol: 'tDc' },
-      { value: ExpantaNum(1e45), symbol: 'qDc' },
-      { value: ExpantaNum(1e48), symbol: 'QDc' },
-      { value: ExpantaNum(1e51), symbol: 'sDc' },
-      { value: ExpantaNum(1e54), symbol: 'SDc' },
-      { value: ExpantaNum(1e57), symbol: 'oDc' },
-      { value: ExpantaNum(1e60), symbol: 'nDc' },
-      { value: ExpantaNum('1e63'), symbol: 'V' }, // Vigintillion threshold
-    ];
-  
-    for (let i = notationSymbols.length - 1; i >= 0; i--) {
-      if (num.gte(notationSymbols[i].value) && num.lt(notationSymbols[i].value.times(10))) {
-        const notatedValue = num.div(notationSymbols[i].value);
-        return `${notatedValue.toFixed(2)}${notationSymbols[i].symbol}`;
-      }
-    }
+    };
   
     if (ExpantaNum.cmp(num, 100) < 0) {
       // Ensure numbers less than 100 have exactly two decimal places
@@ -148,13 +117,49 @@ function notate(number) {
         return Math.floor(num);
     } else if ((ExpantaNum.cmp(num, 1000000) < 0) && (ExpantaNum.cmp(num, 1000) > 0)) {
         return `${ExpantaNum.div(num, 1000).toFixed(2)}K`;
-    };
-  
-    if (num.gt(ExpantaNum(1e66))) {
+    } else if ((ExpantaNum.cmp(num, 1e9) < 0) && (ExpantaNum.cmp(num, 1e6) > 0)) {
+        return `${ExpantaNum.div(num, 1e6).toFixed(2)} M`;
+    } else if ((ExpantaNum.cmp(num, 1e12) < 0) && (ExpantaNum.cmp(num, 1e9) > 0)) {
+        return `${ExpantaNum.div(num, 1e9).toFixed(2)} B`;
+    } else if ((ExpantaNum.cmp(num, 1e15) < 0) && (ExpantaNum.cmp(num, 1e12) > 0)) {
+        return `${ExpantaNum.div(num, 1e12).toFixed(2)} T`;
+    } else if ((ExpantaNum.cmp(num, 1e18) < 0) && (ExpantaNum.cmp(num, 1e15) > 0)) {
+        return `${ExpantaNum.div(num, 1e15).toFixed(2)} Qa`;
+    } else if ((ExpantaNum.cmp(num, 1e21) < 0) && (ExpantaNum.cmp(num, 1e18) > 0)) {
+        return `${ExpantaNum.div(num, 1e18).toFixed(2)} Qi`;
+    } else if ((ExpantaNum.cmp(num, 1e24) < 0) && (ExpantaNum.cmp(num, 1e21) > 0)) {
+        return `${ExpantaNum.div(num, 1e21).toFixed(2)} Sx`;
+    } else if ((ExpantaNum.cmp(num, 1e27) < 0) && (ExpantaNum.cmp(num, 1e24) > 0)) {
+        return `${ExpantaNum.div(num, 1e24).toFixed(2)} Sp`;
+    } else if ((ExpantaNum.cmp(num, 1e30) < 0) && (ExpantaNum.cmp(num, 1e27) > 0)) {
+        return `${ExpantaNum.div(num, 1e27).toFixed(2)} Oc`;
+    } else if ((ExpantaNum.cmp(num, 1e33) < 0) && (ExpantaNum.cmp(num, 1e30) > 0)) {
+        return `${ExpantaNum.div(num, 1e30).toFixed(2)} No`;
+    } else if ((ExpantaNum.cmp(num, 1e36) < 0) && (ExpantaNum.cmp(num, 1e33) > 0)) {
+        return `${ExpantaNum.div(num, 1e33).toFixed(2)} Dc`;
+    } else if ((ExpantaNum.cmp(num, 1e39) < 0) && (ExpantaNum.cmp(num, 1e36) > 0)) {
+        return `${ExpantaNum.div(num, 1e36).toFixed(2)} uDc`;
+    } else if ((ExpantaNum.cmp(num, 1e42) < 0) && (ExpantaNum.cmp(num, 1e39) > 0)) {
+        return `${ExpantaNum.div(num, 1e39).toFixed(2)} dDc`;
+    } else if ((ExpantaNum.cmp(num, 1e45) < 0) && (ExpantaNum.cmp(num, 1e42) > 0)) {
+        return `${ExpantaNum.div(num, 1e42).toFixed(2)} tDc`;
+    } else if ((ExpantaNum.cmp(num, 1e48) < 0) && (ExpantaNum.cmp(num, 1e45) > 0)) {
+        return `${ExpantaNum.div(num, 1e45).toFixed(2)} qDc`;
+    } else if ((ExpantaNum.cmp(num, 1e51) < 0) && (ExpantaNum.cmp(num, 1e48) > 0)) {
+        return `${ExpantaNum.div(num, 1e48).toFixed(2)} QDc`;
+    } else if ((ExpantaNum.cmp(num, 1e54) < 0) && (ExpantaNum.cmp(num, 1e51) > 0)) {
+        return `${ExpantaNum.div(num, 1e51).toFixed(2)} sDc`;
+    } else if ((ExpantaNum.cmp(num, 1e57) < 0) && (ExpantaNum.cmp(num, 1e54) > 0)) {
+        return `${ExpantaNum.div(num, 1e54).toFixed(2)} SDc`;
+    } else if ((ExpantaNum.cmp(num, 1e60) < 0) && (ExpantaNum.cmp(num, 1e57) > 0)) {
+        return `${ExpantaNum.div(num, 1e57).toFixed(2)} oDc`;
+    } else if ((ExpantaNum.cmp(num, 1e63) < 0) && (ExpantaNum.cmp(num, 1e60) > 0)) {
+        return `${ExpantaNum.div(num, 1e60).toFixed(2)} nDc`;
+    } else if (ExpantaNum.cmp(num, 1e66) >= 0) {
       var exponent = ExpantaNum.log10(num).toFixed(0);
       var mantissa = ExpantaNum.div(num, ExpantaNum.pow(ExpantaNum(10), exponent)).toFixed(2);
       return `${mantissa}e${exponent}`;
-    }
+    };
   
     return number.toString();
 }
