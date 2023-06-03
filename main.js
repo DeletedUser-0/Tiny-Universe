@@ -18,7 +18,13 @@ class Player {
             cost: data?.up2?.cost || 10,
             level: data?.up2?.level || 0,
             effect: data?.up2?.effect || 0.01,
-            chance: data?.up2?.chance || 0
+            chance: data?.up2?.chance || 0,
+            multpoints: data?.up2?.multpoints || 15,
+            multchance: data?.up2?.multchance || 1.1,
+        }
+        this.up2b = {
+            cost: data?.up2b?.cost || 1000,
+            level: data?.up2b?.level || 0,
         }
     };
 };
@@ -42,15 +48,20 @@ window.setInterval(function() {
     document.getElementById("up1b").innerHTML = `<b>Multiply first upgrade effect by 3</b> <br> Cost: <b>${notate(player.up1b.cost)}</b> points <br> Level: ${ExpantaNum.round(player.up1b.level)}`;
     if (ExpantaNum.cmp(player.points.max, 1) >= 0) {
         if (ExpantaNum.cmp(player.up2.level, 1) >= 0) {
-            document.getElementById("up2").innerHTML = `<b>+${ExpantaNum.times(player.up2.chance, 0.1).toFixed(1)}% chance/s to increase points production by ${notate(player.up2.effect)} (currently: ${new ExpantaNum(player.up2.chance).toFixed(1)}%) </b> <br> Cost: <b>${notate(player.up2.cost)}</b> points <br> Level: ${ExpantaNum.round(player.up2.level)}`;
+            document.getElementById("up2").innerHTML = `<b>+${ExpantaNum.times(player.up2.chance, ExpantaNum.sub(player.up2.multchance, 1)).toFixed(1)}% chance/s to increase points production by ${notate(player.up2.effect)} (currently: ${new ExpantaNum(player.up2.chance).toFixed(1)}%) </b> <br> Cost: <b>${notate(player.up2.cost)}</b> points <br> Level: ${ExpantaNum.round(player.up2.level)}`;
         } else {
             document.getElementById("up2").innerHTML = `<b>Add a 10.0% chance/s to increase points production by 0.01 (currently: ${new ExpantaNum(player.up2.chance).toFixed(1)}%) </b> <br> Cost: <b>${notate(player.up2.cost)}</b> points <br> Level: ${ExpantaNum.round(player.up2.level)}`;
         };
     } else {
         document.getElementById("up2").innerHTML = `Reach 1 point to see this upgrade.`;
     };
+    if (ExpantaNum.cmp(player.points.max, 1000) >= 0) {
+        document.getElementById("up2b").innerHTML = `<b>Improve the second upgrade</b> <br> Cost: <b>${notate(player.up2b.cost)}</b> points <br> Level: ${ExpantaNum.round(player.up2b.level)}`;
+    } else {
+        document.getElementById("up2b").innerHTML = `Reach 1.00K points to see this upgrade.`;
+    };
     if (ExpantaNum.cmp(player.up2.chance, 100) >= 0) {
-        player.up2.effect = ExpantaNum.times(player.up2.effect, 15);
+        player.up2.effect = ExpantaNum.times(player.up2.effect, player.up2.multpoints);
         player.up2.chance = new ExpantaNum("10");
     };
 }, 0);
@@ -92,13 +103,22 @@ function up1b() {
 function up2() {
     if (ExpantaNum.cmp(player.points.points, player.up2.cost) >= 0) {
         if (ExpantaNum.cmp(player.up2.level, 1) >= 0) {
-            player.up2.chance = ExpantaNum.times(player.up2.chance, 1.1);
+            player.up2.chance = ExpantaNum.times(player.up2.chance, player.up2.multchance);
         } else {
             player.up2.chance = new ExpantaNum("10");
         };
         player.points.points = ExpantaNum.sub(player.points.points, player.up2.cost);
         player.up2.cost = ExpantaNum.times(player.up2.cost, 1.5);
         player.up2.level = ExpantaNum.add(player.up2.level, 1);
+    };
+};
+
+function up2b() {
+    if (ExpantaNum.cmp(player.points.points, player.up2b.cost) >= 0) {
+        player.up2b.cost = ExpantaNum.pow(player.up2b.cost, 1.075);
+        player.up2b.level = ExpantaNum.add(player.up2b.level, 1);
+        player.up2.multchance = ExpantaNum.times(player.up2.multchance, 1.005);
+        player.up2.multpoints = ExpantaNum.times(player.up2.multpoints, 1.015);
     };
 };
 
@@ -115,47 +135,50 @@ function notate(number) {
       return num.toFixed(2);
     } else if ((ExpantaNum.cmp(num, 1000) < 0) && (ExpantaNum.cmp(num, 100) > 0)) {
         return Math.floor(num);
-    } else if ((ExpantaNum.cmp(num, 1000000) < 0) && (ExpantaNum.cmp(num, 1000) > 0)) {
+    } else if ((ExpantaNum.cmp(num, 1000000) < 0) && (ExpantaNum.cmp(num, 1000) >= 0)) {
         return `${ExpantaNum.div(num, 1000).toFixed(2)}K`;
-    } else if ((ExpantaNum.cmp(num, 1e9) < 0) && (ExpantaNum.cmp(num, 1e6) > 0)) {
+    } else if ((ExpantaNum.cmp(num, 1e9) < 0) && (ExpantaNum.cmp(num, 1e6) >= 0)) {
         return `${ExpantaNum.div(num, 1e6).toFixed(2)} M`;
-    } else if ((ExpantaNum.cmp(num, 1e12) < 0) && (ExpantaNum.cmp(num, 1e9) > 0)) {
+    } else if ((ExpantaNum.cmp(num, 1e12) < 0) && (ExpantaNum.cmp(num, 1e9) >= 0)) {
         return `${ExpantaNum.div(num, 1e9).toFixed(2)} B`;
-    } else if ((ExpantaNum.cmp(num, 1e15) < 0) && (ExpantaNum.cmp(num, 1e12) > 0)) {
+    } else if ((ExpantaNum.cmp(num, 1e15) < 0) && (ExpantaNum.cmp(num, 1e12) >= 0)) {
         return `${ExpantaNum.div(num, 1e12).toFixed(2)} T`;
-    } else if ((ExpantaNum.cmp(num, 1e18) < 0) && (ExpantaNum.cmp(num, 1e15) > 0)) {
+    } else if ((ExpantaNum.cmp(num, 1e18) < 0) && (ExpantaNum.cmp(num, 1e15) >= 0)) {
         return `${ExpantaNum.div(num, 1e15).toFixed(2)} Qa`;
-    } else if ((ExpantaNum.cmp(num, 1e21) < 0) && (ExpantaNum.cmp(num, 1e18) > 0)) {
+    } else if ((ExpantaNum.cmp(num, 1e21) < 0) && (ExpantaNum.cmp(num, 1e18) >= 0)) {
         return `${ExpantaNum.div(num, 1e18).toFixed(2)} Qi`;
-    } else if ((ExpantaNum.cmp(num, 1e24) < 0) && (ExpantaNum.cmp(num, 1e21) > 0)) {
+    } else if ((ExpantaNum.cmp(num, 1e24) < 0) && (ExpantaNum.cmp(num, 1e21) >= 0)) {
         return `${ExpantaNum.div(num, 1e21).toFixed(2)} Sx`;
-    } else if ((ExpantaNum.cmp(num, 1e27) < 0) && (ExpantaNum.cmp(num, 1e24) > 0)) {
+    } else if ((ExpantaNum.cmp(num, 1e27) < 0) && (ExpantaNum.cmp(num, 1e24) >= 0)) {
         return `${ExpantaNum.div(num, 1e24).toFixed(2)} Sp`;
-    } else if ((ExpantaNum.cmp(num, 1e30) < 0) && (ExpantaNum.cmp(num, 1e27) > 0)) {
+    } else if ((ExpantaNum.cmp(num, 1e30) < 0) && (ExpantaNum.cmp(num, 1e27) >= 0)) {
         return `${ExpantaNum.div(num, 1e27).toFixed(2)} Oc`;
-    } else if ((ExpantaNum.cmp(num, 1e33) < 0) && (ExpantaNum.cmp(num, 1e30) > 0)) {
+    } else if ((ExpantaNum.cmp(num, 1e33) < 0) && (ExpantaNum.cmp(num, 1e30) >= 0)) {
         return `${ExpantaNum.div(num, 1e30).toFixed(2)} No`;
-    } else if ((ExpantaNum.cmp(num, 1e36) < 0) && (ExpantaNum.cmp(num, 1e33) > 0)) {
+    } else if ((ExpantaNum.cmp(num, 1e36) < 0) && (ExpantaNum.cmp(num, 1e33) >= 0)) {
         return `${ExpantaNum.div(num, 1e33).toFixed(2)} Dc`;
-    } else if ((ExpantaNum.cmp(num, 1e39) < 0) && (ExpantaNum.cmp(num, 1e36) > 0)) {
+    } else if ((ExpantaNum.cmp(num, 1e39) < 0) && (ExpantaNum.cmp(num, 1e36) >= 0)) {
         return `${ExpantaNum.div(num, 1e36).toFixed(2)} uDc`;
-    } else if ((ExpantaNum.cmp(num, 1e42) < 0) && (ExpantaNum.cmp(num, 1e39) > 0)) {
+    } else if ((ExpantaNum.cmp(num, 1e42) < 0) && (ExpantaNum.cmp(num, 1e39) >= 0)) {
         return `${ExpantaNum.div(num, 1e39).toFixed(2)} dDc`;
-    } else if ((ExpantaNum.cmp(num, 1e45) < 0) && (ExpantaNum.cmp(num, 1e42) > 0)) {
+    } else if ((ExpantaNum.cmp(num, 1e45) < 0) && (ExpantaNum.cmp(num, 1e42) >= 0)) {
         return `${ExpantaNum.div(num, 1e42).toFixed(2)} tDc`;
-    } else if ((ExpantaNum.cmp(num, 1e48) < 0) && (ExpantaNum.cmp(num, 1e45) > 0)) {
+    } else if ((ExpantaNum.cmp(num, 1e48) < 0) && (ExpantaNum.cmp(num, 1e45) >= 0)) {
         return `${ExpantaNum.div(num, 1e45).toFixed(2)} qDc`;
-    } else if ((ExpantaNum.cmp(num, 1e51) < 0) && (ExpantaNum.cmp(num, 1e48) > 0)) {
+    } else if ((ExpantaNum.cmp(num, 1e51) < 0) && (ExpantaNum.cmp(num, 1e48) >= 0)) {
         return `${ExpantaNum.div(num, 1e48).toFixed(2)} QDc`;
-    } else if ((ExpantaNum.cmp(num, 1e54) < 0) && (ExpantaNum.cmp(num, 1e51) > 0)) {
+    } else if ((ExpantaNum.cmp(num, 1e54) < 0) && (ExpantaNum.cmp(num, 1e51) >= 0)) {
         return `${ExpantaNum.div(num, 1e51).toFixed(2)} sDc`;
-    } else if ((ExpantaNum.cmp(num, 1e57) < 0) && (ExpantaNum.cmp(num, 1e54) > 0)) {
+    } else if ((ExpantaNum.cmp(num, 1e57) < 0) && (ExpantaNum.cmp(num, 1e54) >= 0)) {
         return `${ExpantaNum.div(num, 1e54).toFixed(2)} SDc`;
-    } else if ((ExpantaNum.cmp(num, 1e60) < 0) && (ExpantaNum.cmp(num, 1e57) > 0)) {
+    } else if ((ExpantaNum.cmp(num, 1e60) < 0) && (ExpantaNum.cmp(num, 1e57) >= 0)) {
         return `${ExpantaNum.div(num, 1e57).toFixed(2)} oDc`;
-    } else if ((ExpantaNum.cmp(num, 1e63) < 0) && (ExpantaNum.cmp(num, 1e60) > 0)) {
+    } else if ((ExpantaNum.cmp(num, 1e63) < 0) && (ExpantaNum.cmp(num, 1e60) >= 0)) {
         return `${ExpantaNum.div(num, 1e60).toFixed(2)} nDc`;
-    } else if (ExpantaNum.cmp(num, 1e66) >= 0) {
+    } else if ((ExpantaNum.cmp(num, 1e66) < 0) && (ExpantaNum.cmp(num, 1e63) >= 0)) {
+        return `${ExpantaNum.div(num, 1e63).toFixed(2)} V`;
+    };
+    if (ExpantaNum.cmp(num, 1e66) >= 0) {
       var exponent = ExpantaNum.log10(num).toFixed(0);
       var mantissa = ExpantaNum.div(num, ExpantaNum.pow(ExpantaNum(10), exponent)).toFixed(2);
       return `${mantissa}e${exponent}`;
@@ -190,7 +213,11 @@ function resetgame() {
             player.up2.cost = new ExpantaNum(10);
             player.up2.level = new ExpantaNum(0);
             player.up2.effect = new ExpantaNum(0.01);
-            player.up2.chance = new ExpantaNum(0);        
+            player.up2.chance = new ExpantaNum(0);      
+            player.up2.multpoints = new ExpantaNum(15);
+            player.up2.multchance = new ExpantaNum(1.1);  
+            player.up2b.cost = new ExpantaNum(1000);
+            player.up2b.level = new ExpantaNum(0);
         };
     };
 };
