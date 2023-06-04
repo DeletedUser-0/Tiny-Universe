@@ -73,6 +73,26 @@ window.setInterval(function() {
         player.up2.effect = ExpantaNum.times(player.up2.effect, player.up2.multpoints);
         player.up2.chance = new ExpantaNum("10");
     };
+    if (ExpantaNum.cmp(player.points.points, new ExpantaNum(1e15)) >= 0) {
+        player.points.points = new ExpantaNum(0);
+        player.points.pps = new ExpantaNum(0.01);
+        player.points.max = new ExpantaNum(0);
+        player.up1.cost = new ExpantaNum(0.1);
+        player.up1.level = new ExpantaNum(0);
+        player.up1.effect = new ExpantaNum(0.01);
+        player.up1b.cost = new ExpantaNum(100);
+        player.up1b.level = new ExpantaNum(0);
+        player.up2.cost = new ExpantaNum(10);
+        player.up2.level = new ExpantaNum(0);
+        player.up2.effect = new ExpantaNum(0.01);
+        player.up2.chance = new ExpantaNum(0);      
+        player.up2.multpoints = new ExpantaNum(15);
+        player.up2.multchance = new ExpantaNum(1.1);  
+        player.up2b.cost = new ExpantaNum(1000);
+        player.up2b.level = new ExpantaNum(0);
+        player.up3.cost = new ExpantaNum(10000);
+        player.up3.level = new ExpantaNum(0);
+    };
 }, 0);
 
 function addpoints() {
