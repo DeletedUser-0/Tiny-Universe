@@ -57,14 +57,18 @@ window.setInterval(function() {
             document.getElementById("up2").innerHTML = `<b>Add a 10.0% chance/s to increase points production by 0.01 (currently: ${new ExpantaNum(player.up2.chance).toFixed(1)}%) </b> <br> Cost: <b>${notate(player.up2.cost)}</b> points <br> Level: ${ExpantaNum.round(player.up2.level)}`;
         };
     } else {
-        document.getElementById("up2").innerHTML = `Reach 1 point to see this upgrade.`;
+        document.getElementById("up2").innerHTML = `Reach <b>1 point</b> to see this upgrade.`;
     };
     if (ExpantaNum.cmp(player.points.max, 1000) >= 0) {
         document.getElementById("up2b").innerHTML = `<b>Improve the second upgrade</b> <br> Cost: <b>${notate(player.up2b.cost)}</b> points <br> Level: ${ExpantaNum.round(player.up2b.level)}`;
     } else {
-        document.getElementById("up2b").innerHTML = `Reach 1.00K points to see this upgrade.`;
+        document.getElementById("up2b").innerHTML = `Reach <b>1.00K points</b> to see this upgrade.`;
     };
-    document.getElementById("up3").innerHTML = `<b>Multiply current production and upgrade effects by 3 <br> Cost: ${notate(player.up3.cost)}</b> <br> Level: ${ExpantaNum.round(player.up3.level)}`
+    if (ExpantaNum.cmp(player.points.max, 5000) >= 0) {
+        document.getElementById("up3").innerHTML = `<b>Multiply current production and upgrade effects by 3 <br> Cost: ${notate(player.up3.cost)}</b> <br> Level: ${ExpantaNum.round(player.up3.level)}`
+    } else {
+        document.getElementById("up3").innerHTML = `Reach <b>5.00K points</b> to see this upgrade.`;
+    }
     if (ExpantaNum.cmp(player.up2.chance, 100) >= 0) {
         player.up2.effect = ExpantaNum.times(player.up2.effect, player.up2.multpoints);
         player.up2.chance = new ExpantaNum("10");
