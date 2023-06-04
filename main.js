@@ -3,7 +3,9 @@ class Player {
         this.points = {
             points: data?.points?.points || 0,
             pps: data?.points?.pps || 0.01,
-            max: data?.points?.max || 0
+            max: data?.points?.max || 0,
+            offline: data?.points?.offline || 0,
+            offlinepps: data?.points?.offlinepps || 0
         };
         this.up1 = {
             cost: data?.up1?.cost || 0.1,
@@ -33,6 +35,7 @@ class Player {
         this.lastTick = data?.lastTick || Date.now();
         this.load = data?.load || false;
         this.diff = data?.diff || 0;
+        this.offline = data?.offline || 0;
     };
 };
 
@@ -73,6 +76,15 @@ window.setInterval(function() {
     } else {
         document.getElementById("up3").innerHTML = `Reach <b>5.00K points</b> to see this upgrade.`;
     }
+    if (ExpantaNum.cmp(player.offline, 1) >= 0) {
+        if (ExpantaNum.cmp(player.up2.level, 1) >= 0) {
+            document.getElementById("offline").innerHTML = `While you were offline, you've earnt ${notate(player.points.offline)} points and ${notate(player.points.offlinepps)} points/s.`
+        } else {
+            document.getElementById("offline").innerHTML = `While you were offline, you've earnt ${notate(player.points.offline)} points.`
+        };    
+    } else {
+        document.getElementById("offline").innerHTML = ``;
+    };
     if (ExpantaNum.cmp(player.up2.chance, 100) >= 0) {
         player.up2.effect = ExpantaNum.times(player.up2.effect, player.up2.multpoints);
         player.up2.chance = new ExpantaNum("10");
@@ -97,6 +109,7 @@ window.setInterval(function() {
         player.up3.cost = new ExpantaNum(10000);
         player.up3.level = new ExpantaNum(0);
     };
+    player.lastTick = Date.now();
 }, 0);
 
 function addpoints() {
@@ -167,20 +180,27 @@ function up3() {
     };
 };
 
+window.onload = function(){
+    player.diff = ExpantaNum.sub(Date.now(), player.lastTick);
+    console.log(player.diff.toString());
+    player.load = false;
+};
+
 window.onbeforeunload = function(){
     player.lastTick = Date.now();
+    player.diff = new ExpantaNum(0);
     console.log(player.diff);
-    player.load = false;
 };
 
 function offline() {
     console.log(player.load);
     if (player.load == false) {
-        player.diff = ExpantaNum.sub(Date.now(), player.lastTick);
-        console.log(player.diff.toString());
+        player.points.offline = ExpantaNum.times(player.points.pps, ExpantaNum.div(player.diff, 1000));
+        player.points.offlinepps = ExpantaNum.times(ExpantaNum.times(ExpantaNum.div(player.up2.chance, 100), player.up2.effect), ExpantaNum.div(player.diff, 1000));
         player.points.points = ExpantaNum.add(player.points.points, ExpantaNum.times(player.points.pps, ExpantaNum.div(player.diff, 1000)));
+        player.offline = ExpantaNum.add(player.offline, 1);
         if (ExpantaNum.cmp(player.up2.level, 0) > 0) {
-            player.points.pps = ExpantaNum.add(player.points.pps, ExpantaNum.times(ExpantaNum.times(player.up2.chance, player.up2.effect), ExpantaNum.div(player.diff, 1000)));
+            player.points.pps = ExpantaNum.add(player.points.pps, ExpantaNum.times(ExpantaNum.times(ExpantaNum.div(player.up2.chance, 100), player.up2.effect), ExpantaNum.div(player.diff, 1000)));
         };
         player.load = true;
     };
@@ -285,6 +305,10 @@ function resetgame() {
             player.up3.level = new ExpantaNum(0);
             player.lastTick = new ExpantaNum(Date.now());
             player.load = false;
+            player.diff = 0;
+            player.offline = 0;
+            player.points.offline = new ExpantaNum(0);
+            player.points.offlinepps = new ExpantaNum(0);
         };
     };
 };
