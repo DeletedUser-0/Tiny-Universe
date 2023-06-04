@@ -30,6 +30,9 @@ class Player {
             cost: data?.up3?.cost || 10000,
             level: data?.up3?.level || 0,
         };
+        this.lastTick = data?.lastTick || Date.now();
+        this.load = data?.load || false;
+        this.diff = data?.diff || 0;
     };
 };
 
@@ -44,6 +47,7 @@ window.setInterval(function() {
     addpoints();
     maxpoints();
     Save();
+    offline();
 }, 20);
 
 window.setInterval(function() {
@@ -163,8 +167,26 @@ function up3() {
     };
 };
 
-function notate(number) {
+window.onbeforeunload = function(){
+    player.lastTick = Date.now();
+    console.log(player.diff);
+    player.load = false;
+};
 
+function offline() {
+    console.log(player.load);
+    if (player.load == false) {
+        player.diff = ExpantaNum.sub(Date.now(), player.lastTick);
+        console.log(player.diff.toString());
+        player.points.points = ExpantaNum.add(player.points.points, ExpantaNum.times(player.points.pps, ExpantaNum.div(player.diff, 1000)));
+        if (ExpantaNum.cmp(player.up2.level, 0) > 0) {
+            player.points.pps = ExpantaNum.add(player.points.pps, ExpantaNum.times(ExpantaNum.times(player.up2.chance, player.up2.effect), ExpantaNum.div(player.diff, 1000)));
+        };
+        player.load = true;
+    };
+};
+
+function notate(number) {
     const num = new ExpantaNum(number);
 
     if (isNaN(number) == true) {
@@ -261,6 +283,8 @@ function resetgame() {
             player.up2b.level = new ExpantaNum(0);
             player.up3.cost = new ExpantaNum(10000);
             player.up3.level = new ExpantaNum(0);
+            player.lastTick = new ExpantaNum(Date.now());
+            player.load = false;
         };
     };
 };
