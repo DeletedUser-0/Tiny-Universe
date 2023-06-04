@@ -21,11 +21,15 @@ class Player {
             chance: data?.up2?.chance || 0,
             multpoints: data?.up2?.multpoints || 15,
             multchance: data?.up2?.multchance || 1.1,
-        }
+        };
         this.up2b = {
             cost: data?.up2b?.cost || 1000,
             level: data?.up2b?.level || 0,
-        }
+        };
+        this.up3 = {
+            cost: data?.up3?.cost || 10000,
+            level: data?.up3?.level || 0,
+        };
     };
 };
 
@@ -60,6 +64,7 @@ window.setInterval(function() {
     } else {
         document.getElementById("up2b").innerHTML = `Reach 1.00K points to see this upgrade.`;
     };
+    document.getElementById("up3").innerHTML = `<b>Multiply current production and upgrade effects by 3 <br> Cost: ${notate(player.up3.cost)}</b> <br> Level: ${ExpantaNum.round(player.up3.level)}`
     if (ExpantaNum.cmp(player.up2.chance, 100) >= 0) {
         player.up2.effect = ExpantaNum.times(player.up2.effect, player.up2.multpoints);
         player.up2.chance = new ExpantaNum("10");
@@ -115,10 +120,22 @@ function up2() {
 
 function up2b() {
     if (ExpantaNum.cmp(player.points.points, player.up2b.cost) >= 0) {
+        player.points.points = ExpantaNum.sub(player.points.points, player.up2b.cost);
         player.up2b.cost = ExpantaNum.pow(player.up2b.cost, 1.075);
         player.up2b.level = ExpantaNum.add(player.up2b.level, 1);
         player.up2.multchance = ExpantaNum.times(player.up2.multchance, 1.005);
         player.up2.multpoints = ExpantaNum.times(player.up2.multpoints, 1.015);
+    };
+};
+
+function up3() {
+    if (ExpantaNum.cmp(player.points.points, player.up3.cost) >= 0) {
+        player.points.points = ExpantaNum.sub(player.points.points, player.up3.cost);
+        player.up3.cost = ExpantaNum.times(player.up3.cost, 3);
+        player.up3.level = ExpantaNum.add(player.up3.level, 1);
+        player.points.pps = ExpantaNum.times(player.points.pps, 1.5);
+        player.up1.effect = ExpantaNum.times(player.up1.effect, 1.5);
+        player.up2.effect = ExpantaNum.times(player.up2.effect, 1.5);
     };
 };
 
@@ -218,6 +235,8 @@ function resetgame() {
             player.up2.multchance = new ExpantaNum(1.1);  
             player.up2b.cost = new ExpantaNum(1000);
             player.up2b.level = new ExpantaNum(0);
+            player.up3.cost = new ExpantaNum(10000);
+            player.up3.level = new ExpantaNum(0);
         };
     };
 };
