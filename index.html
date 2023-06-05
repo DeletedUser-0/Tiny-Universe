@@ -1,26 +1,31 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <script src="ExpantaNum.js"></script>
-        <script src="main.js"></script>
-        <script src="disable_inspect_element.js"></script>
-        <link href="style.css" rel="stylesheet">
-    </head>
-    <body style="background-color: #f2f2f2;">
-        <p id="title">Tiny Universe</p>
-        <p id="points">Points: 0.00 <span style="font-size: 50%;">(+0.00/s)</span></p>
-        <br>
-        <button id="up1" onclick="up1()"></button>
-        <button id="up2" onclick="up2()"></button>
-        <button id="up3" onclick="up3()"></button>
-        <br>
-        <br>
-        <button id="up1b" onclick="up1b()"></button>
-        <button id="up2b" onclick="up2b()"></button>
-        <br>
-        <br>
-        <button onclick="resetgame()">Reset Game</button>
-        <br>
-        <p id="offline"></p>
-    </body>
+  <head>
+    <script src="ExpantaNum.js"></script>
+    <script src="main.js"></script>
+    <link href="style.css" rel="stylesheet">
+  </head>
+  <body>
+    <p id="title">Tiny Universe</p>
+    <p id="points">Points: 0.00 <span style="font-size: 50%;">(+0.00/s)</span></p>
+    <br>
+    <div class="button-container">
+      <div class="row">
+        <div class="column">
+          <button id="up1" onclick="up1()"></button>
+          <button id="up1b" onclick="up1b()"></button>
+        </div>
+        <div class="column">
+          <button id="up2" onclick="up2()"></button>
+          <button id="up2b" onclick="up2b()"></button>
+        </div>
+        <div class="column">
+          <button id="up3" onclick="up3()"></button>
+        </div>
+      </div>
+    </div>
+    <button id="reset-button" onclick="resetgame()">Reset Game</button>
+    <br>
+    <p id="offline"></p>
+  </body>
 </html>
