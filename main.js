@@ -86,8 +86,8 @@ window.setInterval(function() {
         document.getElementById("up2b").innerHTML = `Reach <b>1.00K points</b> to see this upgrade.`;
     };
     if (ExpantaNum.cmp(player.points.max, 5000) >= 0) {
-        document.getElementById("up3").innerHTML = `<b>Multiply current production and upgrade effects by 1.5 <br> Cost: ${notate(player.up3.cost)}</b> <br> Level: ${ExpantaNum.round(player.up3.level)}`;
-        document.getElementById("up3b").innerHTML = `<b>All upgrades become ${notate(ExpantaNum.sub(100, ExpantaNum.times(player.up3b.effect, 100)))}% cheaper (currently: ${notate(ExpantaNum.pow(player.up3b.effect, player.up3b.level).times(100))}% discount)</b> <br> Cost: ${notate(player.up3b.cost)} <br> Level: ${ExpantaNum.round(player.up3b.level)}`;
+        document.getElementById("up3").innerHTML = `<b>Multiply current production and upgrade effects by 1.5</b> <br> Cost: <b>${notate(player.up3.cost)}</b> points <br> Level: ${ExpantaNum.round(player.up3.level)}`;
+        document.getElementById("up3b").innerHTML = `<b>All upgrades become ${notate(ExpantaNum.sub(100, ExpantaNum.times(player.up3b.effect, 100)))}% cheaper (currently: ${notate(ExpantaNum.pow(player.up3b.effect, player.up3b.level).times(100))}% discount)</b> <br> Cost: <b>${notate(player.up3b.cost)}</b> points <br> Level: ${ExpantaNum.round(player.up3b.level)}`;
     } else {
         document.getElementById("up3").innerHTML = `Reach <b>5.00K points</b> to see this upgrade.`;
         document.getElementById("up3b").innerHTML = `Reach <b>5.00K points</b> to see this upgrade.`;
@@ -199,8 +199,8 @@ function up3() {
 function up3b() {
     if (ExpantaNum.cmp(player.points.points, player.up3b.cost) >= 0) {
         player.points.points = ExpantaNum.sub(player.points.points, player.up3b.cost);
-        player.up3.cost = ExpantaNum.times(player.up3.cost, 1.35).pow(1.02);
-        player.up3.level = ExpantaNum.add(player.up3.level, 1);
+        player.up3b.cost = ExpantaNum.times(player.up3b.cost, 1.35).pow(1.02);
+        player.up3b.level = ExpantaNum.add(player.up3b.level, 1);
         player.up1.cost = ExpantaNum.times(player.up1.cost, player.up3b.effect);
         player.up1b.cost = ExpantaNum.times(player.up1b.cost, player.up3b.effect);
         player.up2.cost = ExpantaNum.times(player.up2.cost, player.up3b.effect);
