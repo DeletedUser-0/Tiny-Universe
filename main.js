@@ -188,8 +188,6 @@ window.onload = function(){
 
 window.onbeforeunload = function(){
     player.lastTick = Date.now();
-    player.diff = new ExpantaNum(0);
-    console.log(player.diff);
 };
 
 function offline() {
