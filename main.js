@@ -87,7 +87,7 @@ window.setInterval(function() {
     };
     if (ExpantaNum.cmp(player.points.max, 5000) >= 0) {
         document.getElementById("up3").innerHTML = `<b>Multiply current production and upgrade effects by 1.5</b> <br> Cost: <b>${notate(player.up3.cost)}</b> points <br> Level: ${ExpantaNum.round(player.up3.level)}`;
-        document.getElementById("up3b").innerHTML = `<b>All upgrades become ${notate(ExpantaNum.sub(100, ExpantaNum.times(player.up3b.effect, 100)))}% cheaper (currently: ${notate(ExpantaNum.pow(player.up3b.effect, player.up3b.level).times(100))}% discount)</b> <br> Cost: <b>${notate(player.up3b.cost)}</b> points <br> Level: ${ExpantaNum.round(player.up3b.level)}`;
+        document.getElementById("up3b").innerHTML = `<b>All upgrades become ${notate(ExpantaNum.sub(100, ExpantaNum.times(player.up3b.effect, 100)))}% cheaper (currently: ${notate(ExpantaNum.sub(100, ExpantaNum.pow(player.up3b.effect, player.up3b.level).times(100)))}% discount)</b> <br> Cost: <b>${notate(player.up3b.cost)}</b> points <br> Level: ${ExpantaNum.round(player.up3b.level)}`;
     } else {
         document.getElementById("up3").innerHTML = `Reach <b>5.00K points</b> to see this upgrade.`;
         document.getElementById("up3b").innerHTML = `Reach <b>5.00K points</b> to see this upgrade.`;
