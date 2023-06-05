@@ -32,6 +32,11 @@ class Player {
             cost: data?.up3?.cost || 10000,
             level: data?.up3?.level || 0,
         };
+        this.up3b = {
+            cost: data?.up3b?.cost || 10000,
+            level: data?.up3b?.level || 0,
+            effect: data?.up3b?.effect || 0.95,
+        }
         this.lastTick = data?.lastTick || Date.now();
         this.load = data?.load || false;
         this.diff = data?.diff || 0;
@@ -81,10 +86,12 @@ window.setInterval(function() {
         document.getElementById("up2b").innerHTML = `Reach <b>1.00K points</b> to see this upgrade.`;
     };
     if (ExpantaNum.cmp(player.points.max, 5000) >= 0) {
-        document.getElementById("up3").innerHTML = `<b>Multiply current production and upgrade effects by 3 <br> Cost: ${notate(player.up3.cost)}</b> <br> Level: ${ExpantaNum.round(player.up3.level)}`
+        document.getElementById("up3").innerHTML = `<b>Multiply current production and upgrade effects by 1.5 <br> Cost: ${notate(player.up3.cost)}</b> <br> Level: ${ExpantaNum.round(player.up3.level)}`;
+        document.getElementById("up3b").innerHTML = `<b>All upgrades become ${notate(ExpantaNum.sub(100, ExpantaNum.times(player.up3b.effect, 100)))}% cheaper (currently: ${notate(ExpantaNum.pow(player.up3b.effect, player.up3b.level).times(100))}% discount)</b> <br> Cost: ${notate(player.up3b.cost)} <br> Level: ${ExpantaNum.round(player.up3b.level)}`;
     } else {
         document.getElementById("up3").innerHTML = `Reach <b>5.00K points</b> to see this upgrade.`;
-    }
+        document.getElementById("up3b").innerHTML = `Reach <b>5.00K points</b> to see this upgrade.`;
+    };
     if (ExpantaNum.cmp(player.offline, 1) >= 0) {
         if (ExpantaNum.cmp(player.up2.level, 1) >= 0) {
             document.getElementById("offline").innerHTML = `While you were offline, you've earnt ${notate(player.points.offline)} points and ${notate(player.points.offlinepps)} points/s.`
@@ -186,6 +193,19 @@ function up3() {
         player.points.pps = ExpantaNum.times(player.points.pps, 1.5);
         player.up1.effect = ExpantaNum.times(player.up1.effect, 1.5);
         player.up2.effect = ExpantaNum.times(player.up2.effect, 1.5);
+    };
+};
+
+function up3b() {
+    if (ExpantaNum.cmp(player.points.points, player.up3b.cost) >= 0) {
+        player.points.points = ExpantaNum.sub(player.points.points, player.up3b.cost);
+        player.up3.cost = ExpantaNum.times(player.up3.cost, 1.35).pow(1.02);
+        player.up3.level = ExpantaNum.add(player.up3.level, 1);
+        player.up1.cost = ExpantaNum.times(player.up1.cost, player.up3b.effect);
+        player.up1b.cost = ExpantaNum.times(player.up1b.cost, player.up3b.effect);
+        player.up2.cost = ExpantaNum.times(player.up2.cost, player.up3b.effect);
+        player.up2b.cost = ExpantaNum.times(player.up2b.cost, player.up3b.effect);
+        player.up3.cost = ExpantaNum.times(player.up3.cost, player.up3b.effect);
     };
 };
 
