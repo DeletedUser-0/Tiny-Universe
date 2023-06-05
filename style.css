@@ -38,16 +38,12 @@ body {
 }
 
 .column button {
-  margin: 10px;
-  width: 300px;
-  height: 150px;
-  font-size: 16px;
-  padding: 10px;
-  border-radius: 10px;
-}
-
-.column button#up3 {
-  margin-top: 20px;
+  margin: 10px; /* Espaçamento entre os botões */
+  width: 300px; /* Largura dos botões */
+  height: 150px; /* Altura dos botões */
+  font-size: 16px; /* Tamanho do texto dentro dos botões */
+  padding: 10px; /* Espaçamento interno dos botões */
+  border-radius: 10px; /* Raio da borda dos botões */
 }
 
 #reset-button {
