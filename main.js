@@ -68,7 +68,7 @@ window.setInterval(function() {
 }, 20);
 
 window.setInterval(function() {
-    document.getElementById("points").innerHTML = `Points: ${notate(player.points.points)} (+${notate(player.points.pps)}/s)`;
+    document.getElementById("points").innerHTML = `Points: ${notate(player.points.points)} <span style="font-size: 50%">(+${notate(player.points.pps)}/s)</span>`;
     document.getElementById("up1").innerHTML = `<b>Increase points production by ${notate(player.up1.effect)}</b> <br> Cost: <b>${notate(player.up1.cost)}</b> points <br> Level: ${ExpantaNum.round(player.up1.level)}`;
     document.getElementById("up1b").innerHTML = `<b>Multiply first upgrade effect by 3</b> <br> Cost: <b>${notate(player.up1b.cost)}</b> points <br> Level: ${ExpantaNum.round(player.up1b.level)}`;
     if (ExpantaNum.cmp(player.points.max, 1) >= 0) {
