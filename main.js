@@ -61,12 +61,12 @@ window.setInterval(function() {
     };
 }, 20);
 
-function updateOfflineProgress(diff) {
+function updateOfflineProgress() {
     player.diff = ExpantaNum.sub(Date.now(), player.lastTick);
     console.log(player.diff.toString());
     if (ExpantaNum.cmp(player.diff, 5000) >= 0) {
 
-        player.points.offline = addpoints(player.diff);
+        player.points.offline = getpoints(player.diff);
         player.points.offlinepps = ExpantaNum.mul(ExpantaNum.mul(ExpantaNum.div(player.up2.chance, 100), player.up2.effect), ExpantaNum.div(player.diff, 1000));
         player.points.points = ExpantaNum.add(player.points.points, player.points.offline);
         player.offline = ExpantaNum.add(player.offline, 1);
@@ -139,6 +139,10 @@ window.setInterval(function() {
         player.up3.level = new ExpantaNum(0);
     };
 }, 0);
+
+function addpoints() {
+    player.points.points = ExpantaNum.add(player.points.points, ExpantaNum.div(player.points.pps, 50));
+};
 
 function maxpoints() {
     if (ExpantaNum.cmp(player.points.points, player.points.max) >= 0) {
@@ -221,7 +225,7 @@ window.onload = function(){
     player.load = false;
 };
 
-function addpoints(diff) {
+function getpoints(diff) {
     return ExpantaNum.mul(player.points.pps, ExpantaNum.div(diff, 1000));
 };
 
