@@ -36,7 +36,11 @@ class Player {
             cost: data?.up3b?.cost || 10000,
             level: data?.up3b?.level || 0,
             effect: data?.up3b?.effect || 0.95,
-        }
+        };
+        this.decimal = {
+            amount: data?.decimal?.amount || 0,
+            total: data?.decimal?.total || 0,
+        };
         this.lastTick = data?.lastTick || Date.now();
         this.load = data?.load || false;
         this.diff = data?.diff || 0;
@@ -58,26 +62,22 @@ window.setInterval(function() {
     if (player.load === false) {
         updateOfflineProgress(player.diff);
         player.load = true;
+    } else {
+        player.lastTick = Date.now();
     };
 }, 20);
 
 function updateOfflineProgress() {
     player.diff = ExpantaNum.sub(Date.now(), player.lastTick);
     console.log(player.diff.toString());
-    if (ExpantaNum.cmp(player.diff, 5000) >= 0) {
 
-        player.points.offline = getpoints(player.diff);
-        player.points.offlinepps = ExpantaNum.mul(ExpantaNum.mul(ExpantaNum.div(player.up2.chance, 100), player.up2.effect), ExpantaNum.div(player.diff, 1000));
+    player.points.offline = getpoints(player.diff);
+    player.points.offlinepps = ExpantaNum.mul(ExpantaNum.mul(ExpantaNum.div(player.up2.chance, 100), player.up2.effect), ExpantaNum.div(player.diff, 1000)).div(2.24);
         player.points.points = ExpantaNum.add(player.points.points, player.points.offline);
-        player.offline = ExpantaNum.add(player.offline, 1);
       
         if (ExpantaNum.cmp(player.up2.level, 0) > 0) {
           player.points.pps = ExpantaNum.add(player.points.pps, player.points.offlinepps);
-        };    
-    } else {
-        player.points.offline = 0;
-        player.points.offlinepps = 0;
-    };
+    };    
 };
 
 window.setInterval(function() {
@@ -117,26 +117,6 @@ window.setInterval(function() {
     if (ExpantaNum.cmp(player.up2.chance, 100) >= 0) {
         player.up2.effect = ExpantaNum.times(player.up2.effect, player.up2.multpoints);
         player.up2.chance = new ExpantaNum("10");
-    };
-    if (ExpantaNum.cmp(player.points.points, new ExpantaNum(1e15)) >= 0) {
-        player.points.points = new ExpantaNum(0);
-        player.points.pps = new ExpantaNum(0.01);
-        player.points.max = new ExpantaNum(0);
-        player.up1.cost = new ExpantaNum(0.1);
-        player.up1.level = new ExpantaNum(0);
-        player.up1.effect = new ExpantaNum(0.01);
-        player.up1b.cost = new ExpantaNum(100);
-        player.up1b.level = new ExpantaNum(0);
-        player.up2.cost = new ExpantaNum(10);
-        player.up2.level = new ExpantaNum(0);
-        player.up2.effect = new ExpantaNum(0.01);
-        player.up2.chance = new ExpantaNum(0);      
-        player.up2.multpoints = new ExpantaNum(15);
-        player.up2.multchance = new ExpantaNum(1.1);  
-        player.up2b.cost = new ExpantaNum(1000);
-        player.up2b.level = new ExpantaNum(0);
-        player.up3.cost = new ExpantaNum(10000);
-        player.up3.level = new ExpantaNum(0);
     };
 }, 0);
 
@@ -226,11 +206,7 @@ window.onload = function(){
 };
 
 function getpoints(diff) {
-    return ExpantaNum.mul(player.points.pps, ExpantaNum.div(diff, 1000));
-};
-
-window.onbeforeunload = function(){
-    player.lastTick = Date.now();
+    return ExpantaNum.mul(player.points.pps, ExpantaNum.div(diff, 1000)).div(2.24);
 };
 
 function notate(number) {
@@ -330,6 +306,8 @@ function resetgame() {
             player.up2b.level = new ExpantaNum(0);
             player.up3.cost = new ExpantaNum(10000);
             player.up3.level = new ExpantaNum(0);
+            player.up3b.cost = new ExpantaNum();
+            player.up3b.effect = new ExpantaNum()
             player.lastTick = new ExpantaNum(Date.now());
             player.load = false;
             player.diff = 0;
