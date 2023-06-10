@@ -537,6 +537,55 @@ function notate2(number) {
 function Save() {
     localStorage.player = JSON.stringify(player);
 };
+
+function ExtractSave() {
+    // Retrieve the save data from localStorage
+    var saveData = localStorage.player;
+
+    // Encode the save data in Base64 format
+    var encodedSaveData = btoa(saveData);
+
+    // Create a temporary input element to hold the encoded save data
+    var tempInput = document.createElement("input");
+    tempInput.value = encodedSaveData;
+    document.body.appendChild(tempInput);
+
+    // Select the value of the input
+    tempInput.select();
+
+    try {
+        // Copy the encoded save data to the clipboard
+        document.execCommand("copy");
+        console.log("Save data copied to clipboard (Base64 encoded):", encodedSaveData);
+    } catch (error) {
+        console.error("Failed to copy save data to clipboard:", error);
+    }
+
+    // Remove the temporary input element
+    document.body.removeChild(tempInput);
+}
+
+function ImportSave() {
+    // Prompt the user to input the save data
+    var encodedSaveData = prompt("Paste the save data here:");
+
+    if (encodedSaveData) {
+        try {
+            // Decode the Base64 encoded save data
+            var saveData = atob(encodedSaveData);
+
+            // Parse the save data and assign it to the player object
+            player = new Player(JSON.parse(saveData));
+
+            // Save the imported data to localStorage
+            localStorage.player = JSON.stringify(player);
+
+            console.log("Save imported successfully");
+        } catch (error) {
+            console.error("Failed to import save:", error);
+        }
+    }
+}
   
 function Load() {
     player = new Player(JSON.parse(localStorage.player));
