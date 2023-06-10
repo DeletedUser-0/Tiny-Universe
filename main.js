@@ -132,15 +132,15 @@ class Player {
         };
         this.Dup2 = {
             cost: data?.Dup2?.cost || 100,
-            bought: data?.Dup2.bought || false,
+            bought: data?.Dup2?.bought || false,
         };
         this.Dup3 = {
             cost: data?.Dup3?.cost || 1000,
-            bought: data?.Dup3.bought || false,
+            bought: data?.Dup3?.bought || false,
         };
         this.Dup4 = {
             cost: data?.Dup4?.cost || 10000,
-            bought: data?.Dup4.bought || false,
+            bought: data?.Dup4?.bought || false,
         };
         this.luck1 = {
             odds: data?.luck1?.odds || 70,
