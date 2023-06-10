@@ -2,33 +2,165 @@
 <html>
   <head>
     <script src="ExpantaNum.js"></script>
+    <script src="tabs.js"></script>
     <script src="main.js"></script>
+    <script src="decimal_points.js"></script>
     <script src="disable_inspect_element.js"></script>
+    <script src="tabs.js"></script>
     <link href="style.css" rel="stylesheet">
   </head>
   <body>
     <title>Tiny Universe</title>
-    <p id="title">Tiny Universe</p>
-    <p id="points">Points: 0.00 <span style="font-size: 50%;">(+0.00/s)</span></p>
-    <br>
-    <div class="button-container">
+      <p id="title">Tiny Universe</p>
+      <br>
+      <p id="decimal">Reach <b>10.00 B</b> points to unlock</p>
+      <div class="decimate">
+        <button id="layer_1" onclick="decimate()"></button>
+      </div>
+      <p id="points">Points: 0.00 <span style="font-size: 50%;">(+0.00/s)</span></p>
+      <div class="tab">
+        <button class="tablinks" onclick="openCity(event, 'points_tab')" id="points_btn">Points</button>
+        <button class="tablinks" onclick="openCity(event, 'decimal_tab')" id="decimal_btn">Decimal</button>
+      </div>
+      <br>
+      <div id="points_tab" class="tabcontent">
+      <div class="button-container">
+        <div class="row">
+          <div class="column">
+            <button id="up1" onclick="up1()"></button>
+            <button id="up1b" onclick="up1b()"></button>
+          </div>
+          <div class="column">
+            <button id="up2" onclick="up2()"></button>
+            <button id="up2b" onclick="up2b()"></button>
+          </div>
+          <div class="column">
+            <button id="up3" onclick="up3()"></button>
+            <button id="up3b" onclick="up3b()"></button>
+          </div>
+        </div>
+        <p id="offline"></p>
+      <br>
+    </div>
+  </div>
+  <div id="decimal_tab" class="tabcontent">
+    <div class="subtab">
+      <button class="subtablinks" onclick="openSubCity(event, 'gen_subtab')" id="generators">Generators</button>
+      <button class="subtablinks" onclick="openSubCity(event, 'decimal_buyables')" id="Buyables">Buyables</button>
+      <button class="subtablinks" onclick="openSubCity(event, 'decimal_upgrades')" id="Upgs">Upgrades</button>
+      <button class="subtablinks" onclick="openSubCity(event, 'decimal_challenges')" id="challenges">Challenges</button>
+      <button class="subtablinks" onclick="openSubCity(event, 'decimal_bonus')" id="Bonus">Extra bonus</button>
+    </div>
+    <p id="decimal2"></p>
+    <div id="gen_subtab" class="subtabcontent">
+      <p id="subpoints"></p>
+      <br>
+      <table class="center">
+        <tr>
+          <td><b>Generator</b></td>
+          <td><b>Amount</b></td>
+          <td><b>Multiplier</b></td>
+          <td><b>Cost</b></td>
+        </tr>
+        <tr>
+          <td>1st Generator</td>
+          <td id="1genA"></td>
+          <td id="1genM"></td>
+          <td><button onclick="gen1()" id="1genC"></button></td>
+        </tr>
+        <tr>
+          <td>2nd Generator</td>
+          <td id="2genA"></td>
+          <td id="2genM"></td>
+          <td><button onclick="gen2()" id="2genC"></button></td>
+        </tr>
+        <tr>
+          <td>3rd Generator</td>
+          <td id="3genA"></td>
+          <td id="3genM"></td>
+          <td><button onclick="gen3()" id="3genC"></button></td>
+        </tr>
+        <tr>
+          <td>4th Generator</td>
+          <td id="4genA"></td>
+          <td id="4genM"></td>
+          <td><button onclick="gen4()" id="4genC"></button></td>
+        </tr>
+        <tr>
+          <td>5th Generator</td>
+          <td id="5genA"></td>
+          <td id="5genM"></td>
+          <td><button onclick="gen5()" id="5genC"></button></td>
+        </tr>
+        <tr>
+          <td>6th Generator</td>
+          <td id="6genA"></td>
+          <td id="6genM"></td>
+          <td><button onclick="gen6()" id="6genC"></button></td>
+        </tr>
+        <tr>
+          <td>7th Generator</td>
+          <td id="7genA"></td>
+          <td id="7genM"></td>
+          <td><button onclick="gen7()" id="7genC"></button></td>
+        </tr>
+        <tr>
+          <td>8th Generator</td>
+          <td id="8genA"></td>
+          <td id="8genM"></td>
+          <td><button onclick="gen8()" id="8genC"></button></td>
+        </tr>
+        <tr>
+          <td>9th Generator</td>
+          <td id="9genA"></td>
+          <td id="9genM"></td>
+          <td><button onclick="gen9()" id="9genC"></button></td>
+        </tr>
+      </table>
+    </div>
+    <div id="decimal_buyables" class="subtabcontent">
       <div class="row">
         <div class="column">
-          <button id="up1" onclick="up1()"></button>
-          <button id="up1b" onclick="up1b()"></button>
-        </div>
-        <div class="column">
-          <button id="up2" onclick="up2()"></button>
-          <button id="up2b" onclick="up2b()"></button>
-        </div>
-        <div class="column">
-          <button id="up3" onclick="up3()"></button>
-          <button id="up3b" onclick="up3b()"></button>
+          <button id="decbuy1" onclick="decbuy1()"></button>
+          <button id="decbuy2" onclick="decbuy2()"></button>
         </div>
       </div>
     </div>
-    <button id="reset-button" onclick="resetgame()">Reset Game</button>
-    <br>
-    <p id="offline"></p>
+    <div id="decimal_upgrades" class="subtabcontent">
+      <div class="row">
+        <div class="column">
+          <button id="Dup1" onclick="Dup1()"></button>
+          <button id="Dup3" onclick="Dup3()"></button>
+        </div>
+        <div class="column">
+          <button id="Dup2" onclick="Dup2()"></button>
+          <button id="Dup4" onclick="Dup4()"></button>
+        </div>
+      </div>
+    </div>
+    <div id="decimal_challenges" class="subtabcontent">
+      <div class="row">
+        <div class="column">
+          <button onclick="chal1()" id="chal1"></button>
+          <button onclick="chal3()" id="chal3"></button>
+        </div>
+        <div class="column">
+          <button onclick="chal2()" id="chal2"></button>
+        </div>
+      </div>
+    </div>
+    <div id="decimal_bonus" class="subtabcontent">
+      <div class="row">
+        <div class="column">
+          <button id="luck1" onclick="luck1()"></button>
+          <button id="luck3" onclick="luck3()"></button>
+        </div>
+        <div class="column">
+          <button id="luck2" onclick="luck2()"></button>
+          <button id="luck4" onclick="luck4()"></button>
+        </div>
+      </div>
+    </div>
+  </div>
   </body>
 </html>
