@@ -218,16 +218,17 @@ window.setInterval(function() {
 }, 20);
 
 function updateOfflineProgress() {
+    player.points.pps = ExpantaNum.times(player.points.Bpps, player.subpoints.multpts).times(player.decbuy1.multpts).times(ExpantaNum.pow(player.chal1.effect, player.chal1.complete));
     player.diff = ExpantaNum.sub(Date.now(), player.lastTick);
     console.log(player.diff.toString());
 
     player.points.offline = getpoints(player.diff);
     player.points.offlinepps = ExpantaNum.mul(ExpantaNum.mul(ExpantaNum.div(player.up2.chance, 100), player.up2.effect), ExpantaNum.div(player.diff, 1000));
-        player.points.points = ExpantaNum.add(player.points.points, player.points.offline);
+    player.points.points = ExpantaNum.add(player.points.points, player.points.offline);
       
-        if (ExpantaNum.cmp(player.up2.level, 0) > 0) {
-          player.points.pps = ExpantaNum.add(player.points.pps, player.points.offlinepps);
-    };    
+    if (ExpantaNum.cmp(player.up2.level, 0) > 0) {
+        player.points.pps = ExpantaNum.add(player.points.pps, player.points.offlinepps);
+    };
 };
 
 /////////////////////
@@ -277,7 +278,6 @@ window.setInterval(function() {
         player.up2.chance = new ExpantaNum("10");
     };
     calcdecimal();
-    player.points.pps = ExpantaNum.times(player.points.Bpps, player.subpoints.multpts).times(player.decbuy1.multpts).times(ExpantaNum.pow(player.chal1.effect, player.chal1.complete));
     if (player.Dup1.bought == true) {
         player.up1.cost = ExpantaNum.div(player.up1.basecost, 2);
         player.up2.cost = ExpantaNum.div(player.up2.basecost, 2);
