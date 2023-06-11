@@ -538,7 +538,7 @@ function Save() {
     localStorage.player = JSON.stringify(player);
 };
 
-function ExtractSave() {
+function ExportSave() {
     // Retrieve the save data from localStorage
     var saveData = localStorage.player;
 
