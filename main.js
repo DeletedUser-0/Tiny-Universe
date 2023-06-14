@@ -218,7 +218,6 @@ window.setInterval(function() {
 }, 20);
 
 function updateOfflineProgress() {
-    player.points.pps = ExpantaNum.times(player.points.Bpps, player.subpoints.multpts).times(player.decbuy1.multpts).times(ExpantaNum.pow(player.chal1.effect, player.chal1.complete));
     player.diff = ExpantaNum.sub(Date.now(), player.lastTick);
     console.log(player.diff.toString());
 
@@ -293,6 +292,7 @@ window.setInterval(function() {
         player.up2b.cost = player.up2b.basecost;
         player.up3b.cost = player.up3b.basecost;
     };
+        player.points.pps = ExpantaNum.times(player.points.Bpps, player.subpoints.multpts).times(player.decbuy1.multpts).times(ExpantaNum.pow(player.chal1.effect, player.chal1.complete));
 }, 0);
 
 function addpoints() {
